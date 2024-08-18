@@ -58,11 +58,11 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/clash.loader.js";
+      var loaderUrl = buildUrl + "/humanclash.loader.js";
       var config = {
-        dataUrl: buildUrl + "/clash.data",
-        frameworkUrl: buildUrl + "/clash.framework.js",
-        codeUrl: buildUrl + "/clash.wasm",
+        dataUrl: buildUrl + "/humanclash.data",
+        frameworkUrl: buildUrl + "/humanclash.framework.js",
+        codeUrl: buildUrl + "/humanclash.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Stingreyzapp",
         productName: "Join Clash 3D 2",
@@ -95,8 +95,8 @@
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
           loadingBar.style.display = "none";
-          //add botim          
-          window.BOT.Run((BOTBridge) => {
+                     //add botim          
+                     window.BOT.Run( (BOTBridge) => {
         // Framework loaded, but JSSDK has not initialized & launched yet
         // DO NOT PUT ANY Calls here
         BOTBridge.onLaunch(() => {
@@ -123,7 +123,7 @@
                       if(res.data.isEnded){
                         console.log("on ad finished");
                       // user has watched the advertisement completely
-                      curUnityInstance.SendMessage('AdManager', 'ShowBotimRewardFinished');
+                      curUnityInstance.SendMessage('webListener', 'onAdClose');
                   } 
 
                     },
@@ -138,7 +138,7 @@
                   console.log("set listener failed");
                     //Listening setup failed
                 }
-            });
+            })
           // you can start using window.Bridge
         // Do not define the BOTBridge variable on window
         })
@@ -150,10 +150,10 @@
 
            //------------------
 
-        var myInstanceId = "";
-      const rewardKey = "rewarded.instantplays.run";
-      function CreateReward() {
-        console.log("show reward, key:", rewardKey);
+     var myInstanceId  = ""
+            const rewardKey = "rewarded.instantplays.run";
+            function CreateReward() {
+              console.log("show reward, key:", rewardKey);
               Bridge.createRewardedAd({
                 rewardedAdKey:rewardKey
               },{
@@ -182,7 +182,7 @@
               //Failed to load ad
                 console.log("failed load reward ads");
               }
-              });
+              })
             }
 
 
@@ -192,7 +192,7 @@
                       Bridge.showRewardedAd({
                       customData: {
                           ucid: '', // 这里应填入具体的值
-                          adkey: rewardKey, // 这里应填入具体的值
+                          adkey: '', // 这里应填入具体的值
                           uuid: myuuid  // 这里应填入具体的值
                       },
                       instanceId: myInstanceId // 从参数中获取实例ID

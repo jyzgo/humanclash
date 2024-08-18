@@ -1,9 +1,9 @@
 const cacheName = "Stingreyzapp-Join Clash 3D 2-1.0";
 const contentToCache = [
-    "Build/clash.loader.js",
-    "Build/clash.framework.js",
-    "Build/clash.data",
-    "Build/clash.wasm",
+    "Build/humanclash.loader.js",
+    "Build/humanclash.framework.js",
+    "Build/humanclash.data",
+    "Build/humanclash.wasm",
     "TemplateData/style.css"
 
 ];
