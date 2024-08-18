@@ -19,6 +19,7 @@
       </div>
       <div id="unity-warning"> </div>
     </div>
+    <script src="https://cdn-web-sg.botim.me/upd/v1/mp/package/framework/35.0.0/framework.universal-35.0.0.js"></script>
     <script>
       window.addEventListener("load", function () {
         if ("serviceWorker" in navigator) {
@@ -88,15 +89,129 @@
 
       var script = document.createElement("script");
       script.src = loaderUrl;
+      var curUnityInstance = null;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
           loadingBar.style.display = "none";
+          //add botim          
+          window.BOT.Run((BOTBridge) => {
+        // Framework loaded, but JSSDK has not initialized & launched yet
+        // DO NOT PUT ANY Calls here
+        BOTBridge.onLaunch(() => {
+          window.Bridge = BOTBridge;
+          console.log('JJJJSSDK initialized and ready to use.');
+
+          Bridge.setRewardedAdListener({
+                instanceId:instanceId,
+                listeners:{
+                    onAdLoad:(res) => {
+                        console.log("on ad load");
+
+                    },
+                    onAdShow:(res) => {
+                      console.log("on ad show");
+
+                    },
+                    onAdError:(res) => {
+
+                      console.log("on ad error ");
+                    },
+                    onAdClose:(res) => {
+                      console.log("on ad close");
+                      if(res.data.isEnded){
+                        console.log("on ad finished");
+                      // user has watched the advertisement completely
+                      curUnityInstance.SendMessage('AdManager', 'ShowBotimRewardFinished');
+                  } 
+
+                    },
+                    onAdClick:(res) => {},
+                }
+                },{
+                success:() => {
+                    //The monitor setting is successful
+                    console.log("set listener success");
+                },
+                fail:() => {
+                  console.log("set listener failed");
+                    //Listening setup failed
+                }
+            });
+          // you can start using window.Bridge
+        // Do not define the BOTBridge variable on window
+        })
+      });
         }).catch((message) => {
           alert(message);
         });
       };
+
+           //------------------
+
+        var myInstanceId = "";
+      const rewardKey = "rewarded.instantplays.run";
+      function CreateReward() {
+        console.log("show reward, key:", rewardKey);
+              Bridge.createRewardedAd({
+                rewardedAdKey:rewardKey
+              },{
+              success:(res) => {
+                console.log("show reward success");
+                //Advertisement instance id created successfully
+                myInstanceId  = res.data.instanceId
+              },
+              fail:() => {
+                console.log("show reward failed");
+                //Failed to create ad
+              }
+              })
+            }
+
+            function loadRewardedAd(){
+              
+              Bridge.loadRewardedAd({
+                instanceId:myInstanceId
+                },{
+                success:() => {
+            //Ad loaded successfully
+              console.log("success load reward ads");
+              },
+              fail:() => {
+              //Failed to load ad
+                console.log("failed load reward ads");
+              }
+              });
+            }
+
+
+            function ShowRewardedAd(myuuid) {
+
+                          // 调用 Bridge 显示奖励广告的接口
+                      Bridge.showRewardedAd({
+                      customData: {
+                          ucid: '', // 这里应填入具体的值
+                          adkey: rewardKey, // 这里应填入具体的值
+                          uuid: myuuid  // 这里应填入具体的值
+                      },
+                      instanceId: myInstanceId // 从参数中获取实例ID
+                  }, {
+                      success: () => {
+                          console.log("Ad displayed successfully");
+                          CreateReward();
+                          // 广告展示成功的处理逻辑
+                      },
+                      fail: () => {
+                          console.log("Display ad failed");
+                          CreateReward();
+                          // 广告展示失败的处理逻辑
+                      }
+                  });
+              }
+
+            //-------------------
+
       document.body.appendChild(script);
     </script>
   </body>
