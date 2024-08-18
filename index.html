@@ -3,6 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Unity WebGL Player | Join Clash 3D 2</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
@@ -25,6 +28,13 @@
     crossorigin="anonymous"
     async
   ></script>
+
+  <script src="https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js"></script>
+  <script>
+  // 初始化
+    var vConsole = new VConsole();
+    console.log('Hello world');
+  </script>
 
 
     <div id="unity-container">
@@ -75,7 +85,7 @@
         updateBannerVisibility();
       }
 
-      var buildUrl = "Build12345";
+      var buildUrl = "Build";
       var loaderUrl = buildUrl + "/humanclash.loader.js";
       var config = {
         dataUrl: buildUrl + "/humanclash.data",
